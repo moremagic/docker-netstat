@@ -4,6 +4,6 @@
   docker run -dP --net=host moremagic/docker-netstat
 
 ## use
-  http://<host>:8012
+  http://(Host Address):8012
 
 
