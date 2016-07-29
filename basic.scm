@@ -90,12 +90,12 @@
                     " on host " (request-server-host req)
                     ".")
             (html:pre
-               (string-join (use-port-string (iota (- 51000 32700) 32700)
-                  (strlist->numlist
-                     (map (^[s] (string-drop s 3))
-                       (partition (^[s] (string-prefix? ":::" s))
-                          (map (pick-num 3) 
-                            (map (^[str] (string-split str #/\s+/)) (cmd-call '(netstat -an)))))))) "</br>")))))))
+              (string-join (use-port-string (iota (- 51000 32700) 32700)
+                (strlist->numlist
+                  (map (^[s] (string-drop s 3))
+                    (partition (^[s] (string-prefix? ":::" s))
+                      (map (pick-num 4)
+                        (map (^[str] (string-split str #/\s+/)) (cmd-call '(netstat -an)))))))) "</br>")))))))
 
 
 (define cmd-call
@@ -104,7 +104,7 @@
 
 (define pick-num
   (^[num]
-    (^[lst] (car (take* lst num)))))
+    (^[lst] (car (reverse (take* lst num))))))
 
 (define use-port-string
   (^(lst use)
