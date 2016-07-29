@@ -102,45 +102,17 @@
     (^(cmd)
         (process-output->string-list cmd)))
 
-
-(define member?
-  (^(n lst)
-    (cond
-      ((eq? lst '()) #f)
-      ((eq? n (car lst)) #t)
-      (else
-        (member? n (cdr lst))))))
-
-(define pick
-  (^[lst size]
-    (cond
-      ((eq? lst '()) '())
-      ((eq? size 0) (car lst))
-      (else
-        (pick (cdr lst) (- size 1))))))
-
 (define pick-num
   (^[num]
-    (^[lst] (pick lst num))))
+    (^[lst] (car (take* lst num)))))
 
 (define use-port-string
   (^(lst use)
-    (cond
-      ((eq? lst '()) '(""))
-      ((member? (car lst) use)
-        (cons
-          (string-join (list (number->string (car lst)) "(* in use)")) (use-port-string (cdr lst) use)))
-      (else
-        (cons (number->string (car lst)) (use-port-string (cdr lst) use))))))
-
+     (map (^p (if (member p use) #"~|p|(* in use)" #"~|p|")) lst)))
 
 (define strlist->numlist
   (^[strlst]
-    (cond
-      ((eq? strlst '()) '())
-      (else
-         (cons (string->number (car strlst)) (strlist->numlist (cdr strlst)))))))
-
+    (map string->number strlst)))
 
 ;;(map (^(lst) (pick lst 3)) '((1 2 3 4) (5 6 7 8) (9 10 11 12) (13 14 15 16)))
 ;;(string-join (use-port-string (iota (- 50201 49000) 49000) (list 49010 50000)) "</br>\r\n")

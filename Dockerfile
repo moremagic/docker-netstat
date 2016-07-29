@@ -21,6 +21,6 @@ RUN make install
 RUN apt-get install -y net-tools
 COPY basic.scm /root/Gauche-makiki/examples/
 
-EXPOSE 8012
+EXPOSE 8012 
 CMD ["gosh", "/root/Gauche-makiki/examples/basic.scm"]
 
